@@ -51,6 +51,20 @@ app.get("/user/:id", (req, res, next) => {
   res.send("special");
 });
 
+app.all("*", (req, res, next) => {
+  const err = new Error(`Can't find ${req.originalUrl} on the server`);
+  err.status = "fail";
+  err.statusCode = 404;
+
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+  res.status(err.statusCode).send(err.message);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
