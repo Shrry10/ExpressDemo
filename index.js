@@ -1,6 +1,7 @@
 const express = require("express");
+
 const app = express();
-const port = 3000;
+app.use(express.json());
 
 const requestTime = (req, res, next) => {
   req.requestTime = Date.now();
@@ -8,7 +9,6 @@ const requestTime = (req, res, next) => {
 };
 
 app.use(requestTime);
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send(`Hello World! Requested at: ${req.requestTime}`);
@@ -51,6 +51,10 @@ app.get("/user/:id", (req, res, next) => {
   res.send("special");
 });
 
+
+
+// ----------error handling-------------
+
 app.all("*", (req, res, next) => {
   const err = new Error(`Can't find ${req.originalUrl} on the server`);
   err.status = "fail";
@@ -65,6 +69,12 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).send(err.message);
 });
 
+
+// -------------------------------------
+
+
+
+const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
