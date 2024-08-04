@@ -1,5 +1,6 @@
 const express = require("express");
-const controller = require("./controllers/basketballController");
+// const controller = require("./controllers/basketballController");
+const ballBoy = require("./routes/ballRoom");
 
 const app = express();
 app.use(express.json());
@@ -15,9 +16,9 @@ app.use(express.json());
 //   res.send(`Hello World! Requested at: ${req.requestTime}`);
 // });
 
-app.route("/basketball").get(controller.get).post(controller.post);
-app.route("/basketball/:id").put(controller.put).delete(controller.delete);
-
+// app.route("/basketball").get(controller.get).post(controller.post);
+// app.route("/basketball/:id").put(controller.put).delete(controller.delete);
+app.use("/basketball", ballBoy);
 
 
 // ----------error handling-------------
@@ -37,8 +38,6 @@ app.use((err, req, res, next) => {
 });
 
 // -------------------------------------
-
-
 
 const port = 3000;
 app.listen(port, () => {
